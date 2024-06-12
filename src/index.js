@@ -29,20 +29,20 @@ app.post('/users', (req, res) => {
   const user = { id: uuidv4(), name, email, age };
 
   users.set(user.id, user);
-  console.debug(users);
 
   res.status(201).json(user);
 });
 
 // Listar Usuários
-app.get('/users', (req, res) => {
+app.get('/users', (_, res) => {
   res.json(Array.from(users.values()));
 });
 
 // Obter Usuário por ID
 app.get('/users/:id', (req, res) => {
     const { id } = req.params;
-    const user = users.find(u => u.id === id);
+    const user = users.get(id);
+
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
     }
@@ -51,15 +51,18 @@ app.get('/users/:id', (req, res) => {
 
 // Atualizar Usuário
 app.put('/users/:id', (req, res) => {
-    const { id } = req.params;
-    const { name, email, age } = req.body;
-    const userIndex = users.findIndex(u => u.id === id);
-    if (userIndex === -1) {
-        return res.status(404).json({ error: 'User not found' });
-    }
-    const updatedUser = { id, name, email, age };
-    users[userIndex] = updatedUser;
-    res.json(updatedUser);
+  const { id } = req.params;
+  const body = req.body;
+  const user = users.get(id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const updatedUser = { ...user, ...body };
+  users.set(id, updatedUser);
+
+  res.json(updatedUser);
 });
 
 // Deletar Usuário
