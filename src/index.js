@@ -31,9 +31,9 @@ app.post('/users', (req, res) => {
     });
   };
 
-  if (age <= 0) {
+  if (age <= 0 || !Number.isInteger(age)) {
     return res.status(400).json({
-      error: "Age must be positive"
+      error: "Age must be a positive number"
     });
   };
 
@@ -82,15 +82,15 @@ app.put('/users/:id', (req, res) => {
     });
   };
 
-  if (!isValidEmail(body.email)) {
+  if (body.email && !isValidEmail(body.email)) {
     return res.status(400).json({
       error: "Email is not valid"
     });
   };
 
-  if (body.age <= 0) {
+  if (body.age && (body.age <= 0 || !Number.isInteger(body.age))) {
     return res.status(400).json({
-      error: "Age must be positive"
+      error: "Age must be a positive number"
     });
   };
 
