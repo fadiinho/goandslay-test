@@ -36,7 +36,7 @@ app.post('/users', (req, res) => {
 
 // Listar Usuários
 app.get('/users', (req, res) => {
-    res.json(users);
+  res.json(Array.from(users.values()));
 });
 
 // Obter Usuário por ID
