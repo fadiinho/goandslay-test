@@ -1,5 +1,6 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { userEmailExists, isValidEmail } from './utils.js';
 
 const app = express();
 app.use(express.json());
@@ -18,18 +19,34 @@ const users = new Map();
 app.post('/users', (req, res) => {
   const { name, email, age } = req.body;
 
-  if (!!users.get(email)) {
-    res.status(409).json({
+  if (!name || !email || !age) {
+    return res.status(400).json({
+      error: "Missing required fields"
+    });
+  };
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({
+      error: "Email is not valid"
+    });
+  };
+
+  if (age <= 0) {
+    return res.status(400).json({
+      error: "Age must be positive"
+    });
+  };
+
+  if (userEmailExists(email, users.values())) {
+    return res.status(409).json({
       error: "User already exists"
     });
-    return;
   }
 
   /** @type{User} */
   const user = { id: uuidv4(), name, email, age };
 
   users.set(user.id, user);
-
   res.status(201).json(user);
 });
 
@@ -40,13 +57,13 @@ app.get('/users', (_, res) => {
 
 // Obter Usuário por ID
 app.get('/users/:id', (req, res) => {
-    const { id } = req.params;
-    const user = users.get(id);
+  const { id } = req.params;
+  const user = users.get(id);
 
-    if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-    }
-    res.json(user);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  res.json(user);
 });
 
 // Atualizar Usuário
@@ -59,9 +76,32 @@ app.put('/users/:id', (req, res) => {
     return res.status(404).json({ error: 'User not found' });
   }
 
+  if (!body.name && !body.email && !body.age) {
+    return res.status(400).json({
+      error: "At least one field is required to update"
+    });
+  };
+
+  if (!isValidEmail(body.email)) {
+    return res.status(400).json({
+      error: "Email is not valid"
+    });
+  };
+
+  if (body.age <= 0) {
+    return res.status(400).json({
+      error: "Age must be positive"
+    });
+  };
+
+  if (userEmailExists(body.email, users.values())) {
+    return res.status(409).json({
+      error: "User with given email already exists"
+    });
+  };
+
   const updatedUser = { ...user, ...body };
   users.set(id, updatedUser);
-
   res.json(updatedUser);
 });
 
