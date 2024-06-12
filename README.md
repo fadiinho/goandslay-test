@@ -34,6 +34,7 @@ npm run dev
 
 #### Exemplo de retorno:
 
+200 - OK
 ```json
 [
 	{
@@ -58,8 +59,8 @@ npm run dev
 
 #### Exemplo de retorno em caso de sucesso:
 
+200 - OK
 ```json
-200 Success -
 {
 	"id": "dadff5fb-c046-4294-b1d6-d46b39b58063",
 	"name": "John",
@@ -72,8 +73,8 @@ npm run dev
 
 Usuário não existe:
 
+404 - Not Found
 ```json
-404 Not Found -
 {
 	"error": "User not found"
 }
@@ -92,8 +93,8 @@ Corpo da Requisição:
 
 #### Exemplo de retorno em caso de sucesso:
 
+201 - Created
 ```json
-201 Created -
 {
 	"id": "ddad3864-bf76-4c6d-91d0-e6bfbdc34343",
 	"name": "Fadiinho",
@@ -106,8 +107,8 @@ Corpo da Requisição:
 
 Usuário já existe:
 
+409 - Conflict
 ```json
-409 Conflict -
 {
 	"error": "User already exists"
 }
@@ -115,8 +116,8 @@ Usuário já existe:
 
 Campos obrigatórios ausentes:
 
+400 - Bad Request
 ```json
-400 Bad Request -
 {
 	"error": "Missing required fields"
 }
@@ -124,8 +125,8 @@ Campos obrigatórios ausentes:
 
 Email inválido:
 
+400 - Bad Request
 ```json
-400 Bad Request -
 {
 	"error": "Email is not valid"
 }
@@ -133,8 +134,8 @@ Email inválido:
 
 Idade menor ou igual a zero:
 
+400 - Bad Request
 ```json
-400 Bad Request -
 {
 	"error": "Age must be a positive number"
 }
@@ -153,8 +154,8 @@ Corpo da Requisição:
 
 #### Exemplo de retorno em caso de sucesso:
 
+200 - OK 
 ```json
-200 Created -
 {
 	"id": "ddad3864-bf76-4c6d-91d0-e6bfbdc34343",
 	"name": "Fadiinho",
@@ -167,8 +168,8 @@ Corpo da Requisição:
 
 Usuário não existe:
 
+404 - Not Found
 ```json
-404 Not Found -
 {
 	"error": "User not found"
 }
@@ -176,8 +177,8 @@ Usuário não existe:
 
 Se todos os campos estiverem ausentes:
 
+400 - Bad Request
 ```json
-400 Bad Request -
 {
 	"error": "At least one field is required to update"
 }
@@ -185,8 +186,8 @@ Se todos os campos estiverem ausentes:
 
 Email inválido:
 
+400 - Bad Request
 ```json
-400 Bad Request -
 {
 	"error": "Email is not valid"
 }
@@ -194,8 +195,8 @@ Email inválido:
 
 Idade menor ou igual a zero:
 
+400 - Bad Request
 ```json
-400 Bad Request -
 {
 	"error": "Age must be a positive number"
 }
@@ -203,8 +204,8 @@ Idade menor ou igual a zero:
 
 Email já existe:
 
+409 - Conflict
 ```json
-409 Conflict -
 {
 	"error": "User with given email already exists"
 }
@@ -216,16 +217,14 @@ Email já existe:
 
 #### Exemplo de retorno em caso de sucesso:
 
-```json
 204 No Content -
-```
 
 #### Exemplos de retorno em caso de falha.
 
 Usuário não existe:
 
+404 - Not Found
 ```json
-404 Not Found -
 {
 	"error": "User not found"
 }
