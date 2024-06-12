@@ -1,17 +1,37 @@
-import express, { json } from 'express';
+import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
-app.use(json());
+app.use(express.json());
 
-let users = [];
+/**
+ * @typedef User
+ * @property {string} id
+ * @property {string} name
+ * @property {string} email
+ * @property {number} age */
+
+/** @type{Map.<string, User>} */
+const users = new Map();
 
 // Criar Usuário
 app.post('/users', (req, res) => {
-    const { name, email, age } = req.body;
-    const user = { id: uuidv4(), name, email, age };
-    users.push(user);
-    res.status(201).json(user);
+  const { name, email, age } = req.body;
+
+  if (!!users.get(email)) {
+    res.status(409).json({
+      error: "User already exists"
+    });
+    return;
+  }
+
+  /** @type{User} */
+  const user = { id: uuidv4(), name, email, age };
+
+  users.set(user.id, user);
+  console.debug(users);
+
+  res.status(201).json(user);
 });
 
 // Listar Usuários
